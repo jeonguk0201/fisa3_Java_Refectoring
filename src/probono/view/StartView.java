@@ -1,6 +1,14 @@
-package probono.view;
+/** 
+4 * PROJECT  : 재능기부 프로젝트
+ * NAME  :  StartView.java
+ * DESC  : 실행 클래스
+ * 		     기부자, 수혜자, 재능기부 종류 및 실제 진행되는 프로젝트 생성 및 CRUD 로직을 test하는 클래스
+ * 
+ * @author  
+ * @version 1.0
+*/
 
-import java.util.ArrayList;
+package probono.view;
 
 import probono.controller.TalentDonationProjectController;
 import probono.model.dto.Beneficiary;
@@ -10,12 +18,7 @@ import probono.model.dto.TalentDonationType;
 
 public class StartView {
 
-	public static void main(String[] args) {
-		ArrayList<Donator> do1 = new ArrayList<Donator>();
-		do1.add(new Donator(7369, "김의사", "kimdoc@company.com", "슈바이처 프로젝트"));
-		do1.add(new Donator(7156, "신예능", "shin@company.com", "오드리햅번 프로젝트"));
-		do1.add(new Donator(8012, "이레사", "lee@company.com", "마더테레사 프로젝트"));
-		do1.add(new Donator(7777, "박메너", "parkdoc@company.com", "슈바이처 프로젝트"));
+	public static void main(String[] args) throws Exception {
 
 		// 기부자 정보 - 사번, 사원명, 이메일, 기부하기를 희망하는 재능기부 종류
 		Donator donator1 = new Donator(7369, "김의사", "kimdoc@company.com", "슈바이처 프로젝트");
@@ -67,27 +70,21 @@ public class StartView {
 		System.out.println("\n*** 02. 모든 Project 검색 ***".toString());
 		controller.getDonationProjectsList();
 		
-		
-		
 
 		System.out.println("\n*** 03. '01슈바이처' Project 검색 ***");
 		controller.getDonationProject("01슈바이처");
 		
 
 		// 재능 기부자 변경하기
+		System.out.println("\n*** 04. '01슈바이처' Project의 기부자 변경(수정) 후 해당 Project 검색 ***");
+		controller.donationProjectUpdate("01슈바이처", donator4);
+		controller.getDonationProject("01슈바이처");
 		
-		System.out.println("\n*** 004. '김의사'를 '슈바이처'로 변경하고 프로젝트 검색 ***".toString());
-		do1.stream().map(donator -> {
-			if (donator.getEname().equals("김의사")) {
-				return new Donator(donator.getEmpno(), "슈바이처", donator.getEmail(), donator.getTalent());
-			} else {
-				return donator;
-			}
-		}).forEach(System.out::println);
 		
 		//재능 기부자 삭제하기 
-		System.out.println("\n*** 005. '이레사' Project 삭제 후 삭제한 Project 검색 ***");
-		do1.stream().filter(donator -> !donator.getEname().equals("이레사")).forEach(System.out::println);
+		System.out.println("\n*** 05. '01슈바이처' Project 삭제 후 삭제한 Project 존재 여부 검색 ***");
+		controller.donationProjectDelete("01슈바이처");
+		controller.getDonationProject("01슈바이처");
+		
 	}
-	
 }

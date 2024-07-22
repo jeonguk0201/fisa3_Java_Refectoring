@@ -10,23 +10,28 @@
 package probono.service;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import probono.model.dto.Beneficiary;
 import probono.model.dto.Donator;
 import probono.model.dto.TalentDonationProject;
 
-
 public class TalentDonationProjectService {
 
 	// singleton design pattern
+	// 서비스클래스에서 일을 제일 많이 함.
 	private static TalentDonationProjectService instance = new TalentDonationProjectService();
 
-	/**   
+	/**
+	 * 브라우저 입력창 (form) -> 입력없이 데이터 전송 -> "" 문자열 객체, 길이 0을 수신함 미존재하는 요청 = server에선
+	 * null
+	 * 
 	 * 진행중인 Project를 저장
 	 */
 	private ArrayList<TalentDonationProject> donationProjectList = new ArrayList<TalentDonationProject>();
 
-	private TalentDonationProjectService() {}
+	private TalentDonationProjectService() {
+	}
 
 	public static TalentDonationProjectService getInstance() {
 		return instance;
@@ -48,14 +53,10 @@ public class TalentDonationProjectService {
 	 * @param projectName 프로젝트 이름
 	 * @return TalentDonationProject 검색된 프로젝트
 	 */
-	public TalentDonationProject getDonationProject(String projectName) {
-		for (TalentDonationProject project : donationProjectList) {
-			if (project != null && project.getTalentDonationProjectName().equals(projectName)) {
-				return project; //메소드 자체의 종료
-			}
-		}
-
-		return null;
+	public Optional<TalentDonationProject>getDonationProject(String projectName) {
+		return 	donationProjectList.stream()
+				.filter(e -> e.getTalentDonationProjectName().equals(projectName))
+				.findFirst();	
 	}
 
 	// TO DO
@@ -64,20 +65,18 @@ public class TalentDonationProjectService {
 	 * 
 	 * @param project 저장하고자 하는 새로운 프로젝트
 	 */
-	
-	/* Controller의 메소드 
-	 * 	public void donationProjectInsert(TalentDonationProject project){}
-	 * */
+
+	/*
+	 * Controller의 메소드 public void donationProjectInsert(TalentDonationProject
+	 * project){}
+	 */
 	public void donationProjectInsert(TalentDonationProject project) throws Exception {
-		
-		TalentDonationProject p = getDonationProject(project.getTalentDonationProjectName());
+		Optional<TalentDonationProject> oProject = getDonationProject(project.getTalentDonationProjectName());
 
-		if (p != null) {
-			throw new Exception("해당 project명은 이미 존재합니다. 재 확인하세요");
+		if (oProject.isPresent()) {
+			donationProjectList.add(project);
 		}
-
-		donationProjectList.add(project);
-		
+		else throw new Exception("해당 project명은 이미 존재합니다.");
 	}
 
 	/**
@@ -86,23 +85,16 @@ public class TalentDonationProjectService {
 	 * @param projectName 프로젝트 이름
 	 * @param people      기부자
 	 */
-	public void donationProjectUpdate(String projectName, Donator people) throws Exception {
-
-		for (TalentDonationProject project : donationProjectList) {
-
-			if (project != null && project.getTalentDonationProjectName().equals(projectName)) {
-
-				if (people != null) {
-					project.setProjectDonator(people);
-					break;
-				} else {
-					throw new Exception("프로젝트 이름은 있으나 기부자 정보 누락 재확인 하세요");
-				}
-
+	public void donationProjectUpdate(String projectName, Donator people) throws Exception{
+		
+			Optional<TalentDonationProject> project =  this.getDonationProject(projectName);		
+			
+			if(project.isPresent()) {
+				if(people == null) throw new Exception("프로젝트 이름과 기부자 정보 재 확인 하세요");
+				project.get().setProjectDonator(people);
 			} else {
-				throw new Exception("프로젝트 이름과 기부자 정보 재 확인 하세요");
+				throw new Exception("프로젝트 이름을 다시 확인해주세요");
 			}
-		}
 
 	}
 
@@ -112,19 +104,16 @@ public class TalentDonationProjectService {
 	 * 
 	 * @param projectName 프로젝트 이름
 	 * @param people      수혜자
+	 * @throws Exception 
 	 */
-	public void beneficiaryProjectUpdate(String projectName, Beneficiary people) {
+	public void beneficiaryProjectUpdate(String projectName, Beneficiary people) throws Exception {
 
-		for (TalentDonationProject project : donationProjectList) {
-
-			if (project != null && project.getTalentDonationProjectName().equals(projectName)) {
-
-				project.setProjectBeneficiary(people);
-
-				break;
-			}
+		Optional<TalentDonationProject> project = getDonationProject(projectName);
+		
+		if(project.isPresent()) {
+			if(people == null) throw new Exception("프로젝트 이름과 기부자 정보 재 확인 하세요");
+			project.get().setProjectBeneficiary(people);
 		}
-
 	}
 
 	// TO DO
@@ -132,12 +121,15 @@ public class TalentDonationProjectService {
 	 * Project 삭제 - 프로젝트 명으로 해당 프로젝트 삭제
 	 * 
 	 * @param projectName 삭제하고자 하는 프로젝트 이름
+	 * @throws Exception 
 	 */
-	public void donationProjectDelete(String projectName) {
-		TalentDonationProject project = getDonationProject(projectName);
+	public void donationProjectDelete(String projectName) throws Exception {
+		Optional<TalentDonationProject> project = getDonationProject(projectName);
 
-		if (project != null) {
+		if (project.isPresent()) {
 			donationProjectList.remove(project);
+		}else {
+			throw new Exception("프로젝트 이름과 기부자 정보 재 확인 하세요");
 		}
 
 	}

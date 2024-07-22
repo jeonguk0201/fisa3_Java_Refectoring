@@ -1,8 +1,5 @@
 package probono.controller;
 
-import java.util.Arrays;
-import java.util.List;
-
 import probono.model.dto.Beneficiary;
 import probono.model.dto.Donator;
 import probono.model.dto.TalentDonationProject;
@@ -15,30 +12,26 @@ public class TalentDonationProjectController {
 	// singleton design pattern
 	/* 객체 생성 수 제약
 	 * 단 하나의 객체를 다른 외부 클래스에 받아서 사용 가능하게는 함
-	 * - 공유 개념, 보유하고 있는 멤버 변수나 메소드 외부 호출 가능하게 하기 위함
-	 * - 주의사항
-	 * 	- 외부에서 해당 객체를 삭제, 수정 금지
-	 * 	- 해당 객체를 보유하고 참조하는 변수값 수정 금지: private 변수
-	 * 	- 생성자 외부 호출 불가: private 생성자
-	 * 	- 객체를 공유한다는 건 객체의 주소값 공유: public
-	 * - 변수명: instance / 메소드명: getInstance()
-	 * - jpa 기술문서등에 createInstance()... 라고 적히기도 해서 따라한다
+	 *  - 공유 개념, 보유하고 있는 멤버변수나 메소드 외부 호출 가능하게 하기 위함
+	 *  - 주의사항
+	 *  	- 외부에서 해당 객체를 삭제, 수정 금지
+	 *  	- 해당 객체를 보유하고 참조하는 변수값 수정 금지
+	 *  	- 생성자 외부 호출 : private 생성자
+	 *  	- 객체를 공유한다는 건 객체의 주소값 공유
+	 * 변수명 : instance / 메소드명 : getInstance() 명 singleton일 경우가 크다.
 	 */
 	private static TalentDonationProjectController instance = new TalentDonationProjectController();
 
 	private static TalentDonationProjectService service = TalentDonationProjectService.getInstance();
 
-	private TalentDonationProjectController() {}
+	private TalentDonationProjectController() {} // 외부 생성 금지 
 
 	public static TalentDonationProjectController getInstance() {
-		return instance;
+		return instance; // 주소값을 공유해서 
 	}
   
 	
 	/**
-	 * 브라우저의 입력창(form)에 입력없이 데이터 전송: ""(문자열 객체), 길이는 0
-	 * 미존재하는 요청 = server애선 null로 인식
-	 * 
 	 * 모든 Project 검색
 	 * 
 	 * @return 모든 Project
@@ -64,10 +57,22 @@ public class TalentDonationProjectController {
 	 * 
 	 * @param project 저장하고자 하는 새로운 프로젝트
 	 */
-	public void donationProjectInsert(TalentDonationProject project){
 	
+	public void donationProjectInsert(TalentDonationProject project){
+		// 입력 데이터 중 프로젝트 이름만 반환 (기준 데이터, 구분 데이터, pk)
 		String projectName = project.getTalentDonationProjectName();
+		/* 입력 여부 검증
+		 * projectName != null
+		 * 	- 입력 존재 자체 없이 요청이 올 경우 null  -> 이건 무슨 상황? 예를들어?
+		 * projectName.length() != 0
+		 * 	- 브라우저 입력시 입력없이 엔터를 누르면 서버는 "" 문자열 길이가 0인 String 객체로 서버는 수신한다.
+		 */
+		
+		//if 조건문은 -> 데이터 입력 여부만 검증하는 조건식
 		if(projectName != null && projectName.length() != 0) {
+			
+			// 중복 id(프로젝트명) 여부 검증
+			// db 연동하면서 검증
 			try {
 				
 				service.donationProjectInsert(project);
@@ -97,15 +102,15 @@ public class TalentDonationProjectController {
 			e.printStackTrace();
 		}
 	}
-	
 
 	/**
 	 * Project의 수혜자 수정 - 프로젝트 명으로 검색해서 해당 프로젝트의 수혜자 수정
 	 * 
 	 * @param projectName 프로젝트 이름
 	 * @param people      수혜자
+	 * @throws Exception 
 	 */
-	public void beneficiaryProjectUpdate(String projectName, Beneficiary people) {
+	public void beneficiaryProjectUpdate(String projectName, Beneficiary people) throws Exception {
 		service.beneficiaryProjectUpdate(projectName, people);
 	}
 
@@ -113,8 +118,9 @@ public class TalentDonationProjectController {
 	 * Project 삭제 - 프로젝트 명으로 해당 프로젝트 삭제
 	 * 
 	 * @param projectName 삭제하고자 하는 프로젝트 이름
+	 * @throws Exception 
 	 */
-	public void donationProjectDelete(String projectName) {
+	public void donationProjectDelete(String projectName) throws Exception {
 		service.donationProjectDelete(projectName);
 	}
 

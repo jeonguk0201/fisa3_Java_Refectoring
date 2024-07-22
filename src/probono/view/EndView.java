@@ -10,14 +10,15 @@
 package probono.view;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import probono.model.dto.TalentDonationProject;
 
 public class EndView {
 	
 	//진행중인 특정 프로젝트 출력 
-	public static void projectView(TalentDonationProject project){
-		if(project != null) {
+	public static void projectView(Optional<TalentDonationProject>project){
+		if(project.isPresent()) {
 			System.out.println(project);	//project.toString()	
 		}else {
 			System.out.println("해당 프로젝트는 존재하지 않습니다.");
