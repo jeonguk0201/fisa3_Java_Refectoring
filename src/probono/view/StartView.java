@@ -10,15 +10,24 @@
 
 package probono.view;
 
+import java.util.ArrayList;
+
 import probono.controller.TalentDonationProjectController;
 import probono.model.dto.Beneficiary;
 import probono.model.dto.Donator;
+import probono.model.dto.Donatorr;
 import probono.model.dto.TalentDonationProject;
 import probono.model.dto.TalentDonationType;
 
 public class StartView {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
+		
+		ArrayList<Donatorr> do1 = new ArrayList<Donatorr>();
+		do1.add(new Donatorr(7369, "김의사", "kimdoc@company.com", "슈바이처 프로젝트"));
+		do1.add(new Donatorr(7156, "신예능", "shin@company.com", "오드리햅번 프로젝트"));
+		do1.add(new Donatorr(8012, "이레사", "lee@company.com", "마더테레사 프로젝트"));
+		do1.add(new Donatorr(7777, "박메너", "parkdoc@company.com", "슈바이처 프로젝트"));
 
 		// 기부자 정보 - 사번, 사원명, 이메일, 기부하기를 희망하는 재능기부 종류
 		Donator donator1 = new Donator(7369, "김의사", "kimdoc@company.com", "슈바이처 프로젝트");
@@ -80,11 +89,31 @@ public class StartView {
 		controller.donationProjectUpdate("01슈바이처", donator4);
 		controller.getDonationProject("01슈바이처");
 		
+		System.out.println("\n*** 004. '김의사'를 '슈바이처'로 변경하고 프로젝트 검색 ***".toString());
+		
+		// 원본 리스트에 대한 인덱스로 반복문을 사용하여 처리
+		for (int i = 0; i < do1.size(); i++) {
+			Donatorr donatorr = do1.get(i);
+		    if (donatorr.getEname().equals("김의사")) {
+		    	Donatorr updatedDonator = new Donatorr(donatorr.getEmpno(), "슈바이처", donatorr.getEmail(), donatorr.getTalent());
+		        do1.set(i, updatedDonator);
+		    }
+		}
+
+		// 변경된 리스트 출력
+		do1.forEach(System.out::println);
 		
 		//재능 기부자 삭제하기 
 		System.out.println("\n*** 05. '01슈바이처' Project 삭제 후 삭제한 Project 존재 여부 검색 ***");
-		controller.donationProjectDelete("01슈바이처");
+		try {
+			controller.donationProjectDelete("01슈바이처");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		controller.getDonationProject("01슈바이처");
 		
+		System.out.println("\n*** 005. '이레사' Project 삭제 후 삭제한 Project 검색 ***");
+		do1.removeIf(donatorr -> donatorr.getEname().equals("이레사"));
+		do1.forEach(System.out::println);
 	}
 }
