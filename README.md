@@ -3,6 +3,7 @@
 
 ### 🙌 개발 팀원
  - 이승언, 손대현, 최수연, 이정욱
+<br/>
 
 ### 🏴 반환 타입 Optional로 수정
 #### getDonationProject (원본)
@@ -31,16 +32,16 @@
 
 #### INSERT 메소드 (원본)
 ``` JAVA
-	public void donationProjectInsert(TalentDonationProject project) throws Exception {
-		
-		TalentDonationProject p = getDonationProject(project.getTalentDonationProjectName());
-		
-		if (p != null) {
-			throw new Exception ("해당 project명은 이미 존재합니다.");
-		}
-		
-		donationProjectList.add(project);
+public void donationProjectInsert(TalentDonationProject project) throws Exception {
+	
+	TalentDonationProject p = getDonationProject(project.getTalentDonationProjectName());
+	
+	if (p != null) {
+		throw new Exception ("해당 project명은 이미 존재합니다.");
 	}
+	
+	donationProjectList.add(project);
+}
 ```
 
  #### INSERT 메소드 (수정)
@@ -55,7 +56,6 @@
 		else throw new Exception("해당 project명은 이미 존재합니다.");
 	}
  ```
-<br/>
 
  #### UPDATE 메소드 (원본)
  ``` JAVA
@@ -91,7 +91,6 @@ public void donationProjectUpdate(String projectName, Donator people) throws Exc
 	}
  }
  ```
-<br/>
 
  #### DELETE 메소드 (원본)
  ``` JAVA
@@ -114,7 +113,7 @@ public void donationProjectUpdate(String projectName, Donator people) throws Exc
 
 	if (project.isPresent()) {
 		donationProjectList.remove(project);
-	}else {
+	} else {
 		throw new Exception("프로젝트 이름과 기부자 정보 재 확인 하세요");
 	}
 } 
