@@ -242,18 +242,3 @@ public class TalentDonationProjectService {
  ```
  </br>
  
- ### 🏴원본 코드
-```JAVA
-public void donationProjectDelete(String projectName) {
-		TalentDonationProject project = getDonationProject(projectName);
-
-		if (project != null) {
-			donationProjectList.remove(project);
-		}
-
-	}
-```
- ### 🏳‍🌈refactoring
- ```JAVA
-do1.removeIf(donatorr -> donatorr.getEname().equals("이레사"));
- ```
