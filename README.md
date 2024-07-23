@@ -2,7 +2,7 @@
 > Lambda와 Stream API를 이용해서 재능기부 프로젝트 리팩토링을 진행했습니다.
 
 ### 🙌 개발 팀원
- - 이승언, 손대현, 최수연, 이정욱
+ - [이승언](https://github.com/jeonguk0201), [최수연](https://github.com/lotuxsoo), [손대현](https://github.com/DaeHyeonSon), [이정욱](https://github.com/seungunleeee)
 <br/>
 
 ### 🏴 반환 타입 Optional로 수정
