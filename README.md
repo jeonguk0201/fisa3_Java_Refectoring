@@ -118,3 +118,7 @@ public void donationProjectUpdate(String projectName, Donator people) throws Exc
 	}
 } 
 ```
+### 🙄 고찰 사항
+- getDonationProject에서 Optional 클래스를 사용하여 객체를 활용함으로써 코드의 재사용성을 증가시킴
+- Null 및 예외 처리 관리가 이뤄짐
+- NullPointerException의 위험을 줄일 수 있음
