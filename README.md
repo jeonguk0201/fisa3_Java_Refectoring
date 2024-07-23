@@ -5,7 +5,7 @@
  - Lambda Stream API를 이용해 재능기부프로젝트 Refactoring
 
  ### 🏴원본 코드
- ```
+ ```JAVA
  /** 
  * PROJECT  : 재능기부 프로젝트
  * NAME  :  TalentDonationProjectService.java
@@ -146,7 +146,7 @@ public class TalentDonationProjectService {
  ```
 
  ### 🏳‍🌈Optional 객체 사용 후 lamda 형식으로 변환
- ``` 
+ ``` JAVA
  public Optional<TalentDonationProject>getDonationProject(String projectName) {
 		return 	donationProjectList.stream()
 				.filter(e -> e.getTalentDonationProjectName().equals(projectName))
@@ -159,7 +159,7 @@ public class TalentDonationProjectService {
 
  ### 🏴CRUD 메소드 수정
  #### 🏳‍🌈Insert 메소드 수정
- ``` 
+ ``` JAVA
  public void donationProjectInsert(TalentDonationProject project) throws Exception {
 		Optional<TalentDonationProject> oProject = getDonationProject(project.getTalentDonationProjectName());
 
@@ -173,7 +173,7 @@ public class TalentDonationProjectService {
 
 
  #### 🏳‍🌈Update 메소드 수정 (기부자)
- ``` 
+ ``` JAVA
  public void donationProjectUpdate(String projectName, Donator people) throws Exception{
 		
 			Optional<TalentDonationProject> project =  this.getDonationProject(projectName);		
@@ -189,7 +189,7 @@ public class TalentDonationProjectService {
  
 
  #### 🏳‍🌈Update 메소드 수정 (수혜자)
- ``` 
+ ``` JAVA
  public void beneficiaryProjectUpdate(String projectName, Beneficiary people) throws Exception {
 
 		Optional<TalentDonationProject> project = getDonationProject(projectName);
@@ -202,7 +202,7 @@ public class TalentDonationProjectService {
  ```
 
  #### 🏳‍🌈Remove 메소드 수정
- ``` 
+ ``` JAVA
  public void donationProjectDelete(String projectName) throws Exception {
 		Optional<TalentDonationProject> project = getDonationProject(projectName);
 
@@ -218,7 +218,7 @@ public class TalentDonationProjectService {
 </br>
 
  ### 🏴원본 코드
- ```
+ ```JAVA
  public void donationProjectUpdate(String projectName, Donator people) {
 		
 		try {
@@ -231,7 +231,7 @@ public class TalentDonationProjectService {
  ```
 
  ### 🏳‍🌈refactoring
- ``` 
+ ``` JAVA
  for (int i = 0; i < do1.size(); i++) {
 			Donatorr donator = do1.get(i);
 		    if (donator.getEname().equals("김의사")) {
@@ -243,7 +243,7 @@ public class TalentDonationProjectService {
  </br>
  
  ### 🏴원본 코드
-```
+```JAVA
 public void donationProjectDelete(String projectName) {
 		TalentDonationProject project = getDonationProject(projectName);
 
@@ -254,6 +254,6 @@ public void donationProjectDelete(String projectName) {
 	}
 ```
  ### 🏳‍🌈refactoring
- ```
+ ```JAVA
 do1.removeIf(donatorr -> donatorr.getEname().equals("이레사"));
  ```
